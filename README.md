@@ -19,16 +19,23 @@ base or runtime lookup is required.
 
 ## Install
 
-Install with the `skills` CLI:
+Install with the `skills` CLI. Pick the command for your agent:
+
+**Codex**
 
 ```bash
 npx skills add humansignal/create-xml-labeling-config-skill --skill create-xml-labeling-config-skill -g -a codex
 ```
 
-Other supported agent targets:
+**Claude Code**
 
 ```bash
 npx skills add humansignal/create-xml-labeling-config-skill --skill create-xml-labeling-config-skill -g -a claude-code
+```
+
+**Cursor**
+
+```bash
 npx skills add humansignal/create-xml-labeling-config-skill --skill create-xml-labeling-config-skill -g -a cursor
 ```
 
