@@ -63,7 +63,9 @@ Optional:
 - **Project title / description** for a new project. If not given,
   derive a sensible title from the task description.
 - **Output path** for the saved config — default
-  `/tmp/labeling-config-<slug>-<YYYY-MM-DD>.xml`.
+  `/tmp/labeling-config-<slug>-<YYYY-MM-DD>.xml`. A sibling sample
+  tasks file is written next to it at
+  `/tmp/labeling-config-<slug>-<YYYY-MM-DD>.tasks.json`.
 
 Don't over-interrogate. Two or three quick clarifying questions are
 fine; a long requirements interview is not. If the user gives you a
@@ -128,13 +130,16 @@ page.) Specific things to nail down in your head before writing XML:
 - **Sample task JSON.** Build a small example task that matches the
   config's `$keys` so the user can immediately import and verify.
   Use sample assets from the guide's section 7 when the user hasn't
-  provided real data URLs.
+  provided real data URLs. Write it as a JSON **list** of task
+  objects (`[{"data": {...}}]`) so it can be uploaded to Label
+  Studio's Data Manager as-is.
 
-Write the config to a temp file:
+Write the config and the sample tasks to sibling temp files:
 
 ```bash
 # Pick a slug from the project title or task description.
 CONFIG_PATH=/tmp/labeling-config-<slug>-$(date +%Y-%m-%d).xml
+TASKS_PATH=/tmp/labeling-config-<slug>-$(date +%Y-%m-%d).tasks.json
 ```
 
 ### Step 3 — Validate locally
@@ -189,10 +194,15 @@ two layers is that no broken config reaches the approval gate.
 
 Reply with **four things**, in this order:
 
-1. **The config itself** in a fenced ```xml``` block.
+1. **The config itself** in a fenced ```xml``` block, with the
+   `.xml` path the user can find it at.
 2. **A sample task JSON** matching the config's `$keys`, in a fenced
-   ```json``` block. Pick realistic-looking sample data — for images
-   use one of the documented sample URLs from section 7 of the guide.
+   ```json``` block, with the `.tasks.json` path the user can
+   upload directly to the Data Manager. Pick realistic-looking
+   sample data — for images use one of the documented sample URLs
+   from section 7 of the guide. Always write the file as a JSON
+   list (`[{"data": {...}}]`) so Data Manager / `import_tasks`
+   accept it without reshaping.
 3. **Assumptions you made** (if any), as a short bulleted list. Be
    specific. "Assumed dataset key is `$text`; change if your CSV
    column is named differently."
@@ -244,14 +254,26 @@ error verbatim. Most failures are:
 
 ### Step 7 — Tell the user what to do next
 
-After a successful push, end the response with a 2-line hint:
+After a successful push, **open the sample tasks file** so the user
+can drag-and-drop it into the Data Manager:
+
+```bash
+open "$TASKS_PATH"
+```
+
+`open` is macOS only. The skill is built for a local LS workflow on
+macOS (see the Notes & limits section). On other platforms, fall
+back to printing the path and skipping the `open` call.
+
+Then end the response with a 2-line hint:
 
 - The project URL.
-- One concrete next step — usually "import tasks from the Data Manager,
-  or via `ls.projects.import_tasks(...)` with the SDK." If the
-  user's data is in cloud storage, mention Project Settings → Cloud
-  Storage. Don't generate the import command unless the user asks
-  for it — that's a separate task.
+- One concrete next step — usually "import the sample tasks at
+  `<TASKS_PATH>` from the Data Manager, or via
+  `ls.projects.import_tasks(...)` with the SDK." If the user's data
+  is in cloud storage, mention Project Settings → Cloud Storage.
+  Don't generate the import command unless the user asks for it —
+  that's a separate task.
 
 ## What this skill does NOT do
 
@@ -280,12 +302,19 @@ After a successful push, end the response with a 2-line hint:
 
 - Configs go to `/tmp/labeling-config-<slug>-<YYYY-MM-DD>.xml`. The
   path is shown to the user in step 5.
-- Sample task JSON goes inline in the chat reply, not to a file.
+- Sample tasks go to a sibling file
+  `/tmp/labeling-config-<slug>-<YYYY-MM-DD>.tasks.json`, always
+  written as a JSON list so it imports cleanly into the Data
+  Manager. The path is shown alongside the inline JSON in step 5.
+- On a successful push, run `open <tasks-path>` so the user can
+  drag-and-drop the file into the new project's Data Manager
+  without hunting for it.
 - Don't paste the config back into chat *after* a successful push —
   the user has it on disk and in Label Studio. The post-push reply
   is short: project URL, next step, done.
-- If the user iterates, keep the same temp file path and overwrite
-  it. One config per task, not a graveyard of versions.
+- If the user iterates, keep the same temp file paths and overwrite
+  both files. One config + one tasks file per task, not a graveyard
+  of versions.
 
 ## Notes & limits
 
