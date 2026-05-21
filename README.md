@@ -14,8 +14,8 @@ bounding boxes, audio transcription, taxonomy review, ranking, pairwise
 comparison, time-series segmentation, and so on.
 
 The skill is **self-contained**: every rule and template it needs to write a
-correct config lives in `references/config_guide.md`. You do **not** need
-access to the internal AutoMax knowledge base for this skill to work.
+correct config lives in `references/config_guide.md`. No external knowledge
+base or runtime lookup is required.
 
 ## Install
 
@@ -202,9 +202,6 @@ breaking change — create a fresh project.
   After you have the project URL, import tasks via the Data Manager,
   the SDK (`ls.projects.import_tasks(...)`), or Project Settings →
   Cloud Storage.
-- **Query AutoMax at runtime.** The reference document is the
-  authority; the skill is portable and doesn't depend on internal
-  HumanSignal infra.
 - **Generate ReactCode / custom React interfaces.** That's the
   `create-interface-skill`'s job. If you ask for "use ReactCode" or
   "custom interface", this skill should hand off to that one.
