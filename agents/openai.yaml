@@ -1,0 +1,4 @@
+create-xml-labeling-config-skill:
+  display_name: "Create XML Labeling Config"
+  short_description: "Build Label Studio XML labeling configs"
+  default_prompt: "Use $create-xml-labeling-config-skill to build a labeling config for sentiment classification with labels Positive / Neutral / Negative."

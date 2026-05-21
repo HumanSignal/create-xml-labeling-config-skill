@@ -1,0 +1,8 @@
+# labeling-config-builder runtime dependencies.
+#
+# The validate + push scripts use only Python's standard library
+# (urllib, xml.etree) so there's nothing to install today. This file
+# exists so the install command in the top-level README
+# (`pip install -r requirements.txt`) works as documented and so we
+# have a place to pin runtime deps if a future iteration needs them
+# (e.g. label-studio-sdk for richer validation via LabelInterface).
