@@ -91,6 +91,14 @@ label-studio start
 That's all you need — the skill itself doesn't depend on the LS
 Python package being installed (it talks to LS over HTTP).
 
+### Or deploy Label Studio on Hugging Face Spaces
+
+If you'd rather not run Label Studio locally, you can stand up a hosted
+instance with persistent storage on a [Hugging Face Space](https://huggingface.co/spaces)
+using three `hf` CLI commands — handy when you want a shareable URL or
+have no local environment. See
+[`references/deploy_on_spaces.md`](references/deploy_on_spaces.md).
+
 ## Credentials (`.env`)
 
 The scripts read credentials from `.env` at the skill root. They walk
