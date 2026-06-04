@@ -5,9 +5,12 @@ description: >-
   description of the annotation task, validate it locally and against the
   user's running Label Studio instance, then — only after explicit approval —
   push it to that instance as a new project or as an update to an existing
-  project. Use when the user asks to "build a labeling config / interface /
-  template for X", "set up a Label Studio project for Y", "make me an XML
-  config for Z", or shares a labeling brief and wants the result deployed.
+  project. If the user has no Label Studio instance yet, any standard install
+  works; one convenient option is a hosted instance on Hugging Face Spaces (see
+  references/deploy_on_spaces.md). Use when the user asks to "build a labeling
+  config / interface / template for X", "set up a Label Studio project for Y",
+  "make me an XML config for Z", shares a labeling brief and wants the result
+  deployed, or needs to stand up a Label Studio instance first.
 ---
 
 # Create XML Labeling Config
@@ -84,6 +87,13 @@ your work, and let them redirect at the approval gate.
 If either is missing, the validate / push steps will warn the user;
 local structural validation still runs and the config is still saved
 to disk for manual upload.
+
+**No Label Studio instance yet?** Server-side validation and the push
+step need a reachable instance. Any standard Label Studio install works
+— local, Docker, self-hosted, or Enterprise/cloud. If the user wants a
+quick hosted instance with persistent storage,
+`references/deploy_on_spaces.md` stands one up on Hugging Face Spaces in
+three `hf` CLI commands; then set `LABEL_STUDIO_URL` to its URL.
 
 ## Workflow
 
